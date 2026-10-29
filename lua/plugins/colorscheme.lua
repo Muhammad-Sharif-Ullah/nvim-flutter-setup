@@ -16,28 +16,36 @@ return {
     "folke/tokyonight.nvim",
     opts = {
       style = "storm",
-      transparent = false,
+      -- Stop painting a background, so the terminal's own transparency shows
+      -- through. Needs background-opacity set in ~/.config/ghostty/config too.
+      transparent = true,
       styles = {
         comments = { italic = true },
         keywords = { italic = true },
         functions = {},
         variables = {},
+        -- The file explorer and floating windows keep their own background
+        -- unless told otherwise, which looks like opaque panels on glass.
+        sidebars = "transparent",
+        floats = "transparent",
       },
       -- Change individual colors of the theme itself.
       on_colors = function(colors)
-        -- colors.comment = "#7f87a3"  -- brighter comments
-        -- colors.bg = "#16161e"       -- darker background
+        -- Default #565f89 is too dim against a transparent background.
+        colors.comment = "#8b95bd"
       end,
       -- Change how specific pieces of syntax are drawn. The names on the left
       -- are highlight groups; see section 4 for how to find the one you want.
       on_highlights = function(hl, colors)
-        -- hl.Comment       = { fg = colors.comment, italic = true }
-        -- hl["@string"]    = { fg = colors.green }
-        -- hl["@keyword"]   = { fg = colors.purple, bold = true }
-        -- hl["@type"]      = { fg = colors.yellow }
-        -- hl["@function"]  = { fg = colors.blue }
-        -- hl.LineNr        = { fg = colors.dark3 }
-        -- hl.CursorLineNr  = { fg = colors.orange, bold = true }
+        hl.Comment = { fg = colors.comment, italic = true }
+        hl["@comment"] = { fg = colors.comment, italic = true }
+        hl["@comment.documentation"] = { fg = colors.comment, italic = true }
+        -- Function parameters were nearly the same grey as comments.
+        hl["@variable.parameter"] = { fg = "#b7c5f0" }
+        hl["@lsp.type.parameter"] = { fg = "#b7c5f0" }
+        -- Line numbers: dim ones readable, current line clearly marked.
+        hl.LineNr = { fg = "#6c769c" }
+        hl.CursorLineNr = { fg = colors.orange, bold = true }
       end,
     },
   },

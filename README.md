@@ -65,6 +65,29 @@ along with the plugin, state and cache directories. Nothing is removed.
 The first launch in a Dart project takes a few seconds while the Dart
 analyser indexes. That is normal and only happens once per project.
 
+## Terminal (Ghostty)
+
+The colourscheme is transparent, so it leans on the terminal for the glass
+look. [`ghostty/config`](ghostty/config) is the matching Ghostty setup:
+Catppuccin Mocha, 82% opacity with blur, JetBrainsMono Nerd Font at 15pt.
+
+Copy it to Ghostty's config path and restart Ghostty:
+
+```sh
+# macOS
+mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty
+cp ghostty/config ~/Library/Application\ Support/com.mitchellh.ghostty/config
+
+# Linux
+mkdir -p ~/.config/ghostty
+cp ghostty/config ~/.config/ghostty/config
+```
+
+Any other terminal works too — set the font to JetBrainsMono Nerd Font and,
+if you want the same look, turn on background transparency. Without
+transparency the Neovim theme still renders fine, just on the terminal's own
+background.
+
 ## Using it
 
 `<leader>` is the **spacebar**. Press it and wait — a menu appears showing
