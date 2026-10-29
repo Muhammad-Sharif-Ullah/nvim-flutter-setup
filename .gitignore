@@ -1,0 +1,9 @@
+# Editor and OS noise
+.DS_Store
+*.swp
+tags
+
+# Written by Neovim at runtime, not part of the config
+spell/
+.luarc.json
+lazyvim.json.bak

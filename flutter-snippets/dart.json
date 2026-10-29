@@ -1,0 +1,119 @@
+{
+  "Stateless Widget": {
+    "prefix": "stless",
+    "body": [
+      "class ${1:MyWidget} extends StatelessWidget {",
+      "  const $1({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ${2:Container()};",
+      "  }",
+      "}"
+    ],
+    "description": "StatelessWidget"
+  },
+  "Stateful Widget": {
+    "prefix": "stful",
+    "body": [
+      "class ${1:MyWidget} extends StatefulWidget {",
+      "  const $1({super.key});",
+      "",
+      "  @override",
+      "  State<$1> createState() => _$1State();",
+      "}",
+      "",
+      "class _$1State extends State<$1> {",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ${2:Container()};",
+      "  }",
+      "}"
+    ],
+    "description": "StatefulWidget"
+  },
+  "Build method": {
+    "prefix": "build",
+    "body": [
+      "@override",
+      "Widget build(BuildContext context) {",
+      "  return ${1:Container()};",
+      "}"
+    ]
+  },
+  "initState": {
+    "prefix": "initS",
+    "body": ["@override", "void initState() {", "  super.initState();", "  $0", "}"]
+  },
+  "dispose": {
+    "prefix": "disp",
+    "body": ["@override", "void dispose() {", "  $1", "  super.dispose();", "}"]
+  },
+  "setState": {
+    "prefix": "sets",
+    "body": ["setState(() {", "  $0", "});"]
+  },
+  "BlocBuilder": {
+    "prefix": "blocb",
+    "body": [
+      "BlocBuilder<${1:Bloc}, ${2:State}>(",
+      "  builder: (context, state) {",
+      "    return ${3:Container()};",
+      "  },",
+      ")"
+    ]
+  },
+  "BlocProvider": {
+    "prefix": "blocp",
+    "body": [
+      "BlocProvider<${1:Bloc}>(",
+      "  create: (context) => $1($2),",
+      "  child: ${3:child},",
+      ")"
+    ]
+  },
+  "BlocListener": {
+    "prefix": "blocl",
+    "body": [
+      "BlocListener<${1:Bloc}, ${2:State}>(",
+      "  listener: (context, state) {",
+      "    $3",
+      "  },",
+      "  child: ${4:child},",
+      ")"
+    ]
+  },
+  "ListView.builder": {
+    "prefix": "lvb",
+    "body": [
+      "ListView.builder(",
+      "  itemCount: ${1:items.length},",
+      "  itemBuilder: (context, index) {",
+      "    return ${2:Container()};",
+      "  },",
+      ")"
+    ]
+  },
+  "StreamBuilder": {
+    "prefix": "strb",
+    "body": [
+      "StreamBuilder<${1:Type}>(",
+      "  stream: ${2:stream},",
+      "  builder: (context, snapshot) {",
+      "    return ${3:Container()};",
+      "  },",
+      ")"
+    ]
+  },
+  "FutureBuilder": {
+    "prefix": "futb",
+    "body": [
+      "FutureBuilder<${1:Type}>(",
+      "  future: ${2:future},",
+      "  builder: (context, snapshot) {",
+      "    return ${3:Container()};",
+      "  },",
+      ")"
+    ]
+  }
+}
