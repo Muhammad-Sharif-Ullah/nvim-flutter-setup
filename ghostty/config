@@ -1,0 +1,37 @@
+# Theme
+theme = "Catppuccin Mocha"
+
+# Transparency / glass
+background-opacity = 0.82
+background-blur-radius = 35
+
+# Font
+font-family = JetBrainsMono Nerd Font
+font-size = 15
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Padding
+window-padding-x = 16
+window-padding-y = 14
+
+# Window
+window-theme = dark
+macos-titlebar-style = transparent
+macos-option-as-alt = true
+
+# Smooth
+mouse-hide-while-typing = true
+copy-on-select = false
+
+# Shell
+shell-integration = zsh
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+
+# Confirm close
+confirm-close-surface = false
