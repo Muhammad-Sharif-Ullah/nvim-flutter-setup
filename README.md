@@ -38,7 +38,7 @@ It takes a few minutes, most of it downloading plugins.
   packaged version is too old)
 - **git, curl, unzip, ripgrep, fd, lazygit, node, a C compiler** — what
   LazyVim's search, picker and treesitter need
-- **tree-sitter CLI** — builds syntax parsers
+- **tree-sitter CLI** — compiles the syntax parsers, including Dart's
 - **JetBrainsMono Nerd Font** — the icons
 - **Flutter SDK**, if absent (Homebrew cask on macOS, a stable clone to
   `~/development/flutter` on Linux, with PATH wired into your shell rc)
@@ -97,3 +97,6 @@ finds the SDK. The config looks for it on PATH, then in `.fvm/flutter_sdk`,
 
 **A plugin looks broken.** Run `:Lazy` to see status, `:checkhealth` for a
 full diagnosis.
+
+**Dart code is not coloured properly.** The parser failed to compile. Check
+that `tree-sitter --version` works, then run `:TSInstall dart` inside Neovim.
