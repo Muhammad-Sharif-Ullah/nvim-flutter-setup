@@ -186,7 +186,7 @@ if have tree-sitter; then
   skip "tree-sitter already installed"
 else
   case "$PKG" in
-    brew)   run brew install tree-sitter ;;
+    brew)   run brew install tree-sitter-cli ;;
     pacman) run $SUDO pacman -S --needed --noconfirm tree-sitter-cli ;;
     *)
       if have npm; then
@@ -365,9 +365,33 @@ fi
 step "Plugins (first run downloads about 40 of them — give it a minute)"
 if [ "$DRY_RUN" -eq 1 ]; then
   printf '  %swould run:%s nvim --headless "+Lazy! sync" +qa\n' "$DIM" "$OFF"
+  printf '  %swould run:%s nvim --headless (build treesitter parsers)\n' "$DIM" "$OFF"
 else
   nvim --headless "+Lazy! sync" +qa 2>&1 | tail -n 5 || warn "plugin sync reported a problem; open nvim and run :Lazy to see it"
   ok "plugins installed"
+
+  # Lazy sync installs plugins but not treesitter parsers -- those are compiled
+  # on demand, which would otherwise leave a fresh machine with no syntax
+  # highlighting until the user stumbled into :TSInstall. Build them here, and
+  # block until done: install() is async and returns immediately.
+  step "Syntax parsers (compiling — slowest part, a couple of minutes)"
+  if ! have tree-sitter; then
+    warn "tree-sitter CLI is missing, so parsers cannot be compiled"
+    warn "install it, then run :TSInstall dart inside nvim"
+  else
+    nvim --headless -c 'lua
+      local ts = require("nvim-treesitter")
+      local spec = require("lazy.core.config").plugins["nvim-treesitter"]
+      local want = spec and spec._ and spec._.opts and spec._.opts.ensure_installed
+      ts.install(want or { "dart", "lua", "vim", "yaml" }):wait(900000)
+      local got = ts.get_installed()
+      print("parsers installed: " .. #got)
+      if not vim.tbl_contains(got, "dart") then
+        print("WARNING: the dart parser did not build")
+      end
+      vim.cmd("qa")' 2>&1 | tail -n 3 || warn "parser build reported a problem; run :TSInstall dart inside nvim"
+    ok "parsers built"
+  fi
 fi
 
 # ================================================================ 8. Doctor ==
