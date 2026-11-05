@@ -31,6 +31,8 @@ The status bar bottom-left always tells you which mode you're in.
 | Pick a device | `<leader>Fd` | `:FlutterDevices` |
 | Pick an emulator | `<leader>Fe` | `:FlutterEmulators` |
 | Run the app | `<leader>Fr` | `:FlutterRun` |
+| Run under the debugger | `<leader>Fg` | `:FlutterDebug` |
+| Show launch configs | `<leader>Fc` | `:FlutterLaunchInfo` |
 | Hot reload | `<leader>Fh` | `:FlutterReload` |
 | Hot restart | `<leader>FR` | `:FlutterRestart` |
 | Stop the app | `<leader>Fq` | `:FlutterQuit` |
@@ -42,12 +44,22 @@ The status bar bottom-left always tells you which mode you're in.
 | Hide / show the output panel | `<leader>FO` | — |
 | Restart the Dart analyser | `<leader>Fs` | `:FlutterLspRestart` |
 | Toggle debug panels | `<leader>Fl` | — |
+| `build_runner build` | `<leader>Fbb` | — |
+| `build_runner watch` | `<leader>Fbw` | — |
+| Stop a running build_runner | `<leader>Fbk` | — |
+| `build_runner clean` + build | `<leader>Fbc` | — |
+| Hide / show the Build Runner panel | `<leader>FbO` | — |
 
 `<leader>Fp`, `<leader>FU` and `<leader>Fc` write into a **Flutter Output**
 panel at the bottom instead of a popup, so you can scroll through all of it.
 `<leader>FO` hides and reopens that panel (the output is kept, so reopening
 shows the last run again). Jump into it with `<C-w>j`, scroll with `<C-d>` /
 `<C-u>`, `G` jumps to the end.
+
+Codegen (`go_router_builder`, `envied`) lives under `<leader>Fb` and streams
+into its own **Build Runner** panel. `<leader>Fbw` starts a watch that keeps
+regenerating as you edit; `<leader>Fbk` stops it. Only one build_runner job
+runs at a time. Commands run from the nearest `pubspec.yaml`, not the cwd.
 
 **Hot reload runs automatically every time you save a `.dart` file.** You rarely need `<leader>Fh`.
 
@@ -76,11 +88,27 @@ Put the cursor anywhere on a widget, then:
 | Wrap with Container | `<leader>FwC` |
 | Wrap with Builder | `<leader>Fwb` |
 | Remove this widget (unwrap) | `<leader>Fwd` |
+| Wrap with BlocBuilder | `<leader>FwBb` |
+| Wrap with BlocConsumer | `<leader>FwBc` |
+| Wrap with BlocSelector | `<leader>FwBs` |
+| Wrap with BlocListener | `<leader>FwBl` |
+| Wrap with MultiBlocListener | `<leader>FwBL` |
+| Wrap with BlocProvider | `<leader>FwBp` |
+| Wrap with BlocProvider.value | `<leader>FwBv` |
+| Wrap with MultiBlocProvider | `<leader>FwBm` |
+| Wrap with RepositoryProvider | `<leader>FwBr` |
+| Wrap with MultiRepositoryProvider | `<leader>FwBR` |
 | Extract Widget | `<leader>Fx` |
 | Extract Method | `<leader>Fm` |
 | Extract Local Variable | `<leader>Fv` |
 
 `<leader>Fww` also offers "Wrap with widget...", which asks for any widget name.
+
+The `<leader>FwB` (bloc) wrappers are not analyzer actions -- they are built
+locally and expand as LuaSnip snippets, so the bloc/state types come up as
+placeholders you tab through. They take the widget under the cursor (found
+via treesitter, so the cursor can sit anywhere inside it) or, in visual mode,
+the selection.
 
 These all work in Visual mode too — select the lines first.
 
@@ -258,6 +286,7 @@ Every panel has its own toggle.
 | File explorer | `<leader>e` |
 | Terminal | `<leader>tt` |
 | Flutter Output (pub get, clean) | `<leader>FO` |
+| Build Runner (codegen) | `<leader>FbO` |
 | Widget tree | `<leader>Fo` |
 | Debug sidebar (variables, stack) | `<leader>dS` |
 | Debug console | `<leader>dC` |
@@ -339,3 +368,35 @@ section 1 of `lua/plugins/colorscheme.lua`.
 
 Run `:Tutor` in Neovim. It is a 30-minute interactive lesson and it is genuinely the
 fastest way to get comfortable. Do it once and most of this file becomes unnecessary.
+
+## Launch configurations (flavors, entrypoints)
+
+Put a `.nvim/launch.json` in the project root and `<leader>Fr` / `<leader>Fg`
+show a picker instead of running `lib/main.dart` straight off. The file uses
+VS Code's schema, so an existing `.vscode/launch.json` can be copied as-is --
+in fact `.vscode/launch.json` is read directly if there is no `.nvim` one.
+
+```jsonc
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "My App (dev) -debug",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/app_dev.dart",   // entrypoint
+      "flutterMode": "debug",          // debug | profile | release
+      "flavor": "dev",                 // optional, -> --flavor dev
+      "deviceId": "macos",             // optional, skips the device picker
+      "cwd": "packages/app",           // optional, for a monorepo
+      "toolArgs": ["--dart-define=API=https://dev.example.com"],
+      "args": ["--trace"]              // passed to the app, after `--`
+    }
+  ]
+}
+```
+
+Comments and trailing commas are fine. Lookup is upward from the current
+file: `.nvim/launch.json`, then `.nvim.json`, then `.vscode/launch.json`.
+**No file, or a broken one, changes nothing** -- the app runs the way it
+always has. `<leader>Fc` says which file was picked up and what is in it.
