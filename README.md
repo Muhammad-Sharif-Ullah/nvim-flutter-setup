@@ -52,6 +52,27 @@ An existing `~/.config/nvim` is **moved** to `~/.config/nvim.backup-<timestamp>`
 along with the plugin, state and cache directories. Nothing is removed.
 `bash install.sh --uninstall` moves the most recent backup back.
 
+## Updating
+
+`~/.config/nvim` is the clone itself, so new versions come down with a pull:
+
+```sh
+cd ~/.config/nvim
+git pull
+```
+
+Quit Neovim with `:qa` and reopen — new plugins are picked up on the next
+start. Re-running `install.sh` is not needed, and `:Lazy sync` only when a
+pull changes `lazy-lock.json`.
+
+Two things a pull cannot do for you:
+
+- **The Ghostty config lives outside Neovim**, so copy it again after a pull
+  that touched it (`cp` as in [Terminal (Ghostty)](#terminal-ghostty) below),
+  then restart Ghostty.
+- **Local edits block the pull.** `git stash && git pull && git stash pop`
+  replays them on top.
+
 ## After installing
 
 1. **Set your terminal font to JetBrainsMono Nerd Font.** Without this the
