@@ -65,13 +65,19 @@ Quit Neovim with `:qa` and reopen — new plugins are picked up on the next
 start. Re-running `install.sh` is not needed, and `:Lazy sync` only when a
 pull changes `lazy-lock.json`.
 
-Two things a pull cannot do for you:
+Three things a pull cannot do for you:
 
 - **The Ghostty config lives outside Neovim**, so copy it again after a pull
   that touched it (`cp` as in [Terminal (Ghostty)](#terminal-ghostty) below),
   then restart Ghostty.
 - **Local edits block the pull.** `git stash && git pull && git stash pop`
   replays them on top.
+- **One-time, for clones made before 5 November 2026.** The history was
+  rewritten on that date, so an older clone has diverged and `git pull` will
+  report unrelated or conflicting commits. Run `git fetch origin && git reset
+  --hard origin/main` instead, once. That discards local edits, so stash
+  anything you want to keep first. The files are unchanged — only the commit
+  ids are new.
 
 ## After installing
 
