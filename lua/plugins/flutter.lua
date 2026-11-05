@@ -13,6 +13,7 @@ return {
       "FlutterDetach", "FlutterOutlineToggle", "FlutterDevTools",
       "FlutterPubGet", "FlutterPubUpgrade", "FlutterLspRestart",
       "FlutterCommands", "FlutterLogToggle", "FlutterInspectWidget",
+      "FlutterLaunchInfo",
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -31,6 +32,8 @@ return {
       { "<leader>Fs", "<cmd>FlutterLspRestart<cr>", desc = "Restart Dart LSP" },
       { "<leader>Fp", "<cmd>FlutterPubGet<cr>", desc = "Pub get" },
       { "<leader>FD", "<cmd>FlutterDevTools<cr>", desc = "DevTools" },
+      { "<leader>Fg", "<cmd>FlutterDebug<cr>", desc = "Run config (debugger)" },
+      { "<leader>Fc", "<cmd>FlutterLaunchInfo<cr>", desc = "Show launch configs" },
     },
     config = function()
       -- Find the Flutter SDK wherever this machine happens to keep it, rather
@@ -145,6 +148,12 @@ return {
       end
 
       init_if_flutter_project()
+
+      -- Project-local run configurations (.nvim/launch.json and friends), so
+      -- a flavoured app is launched by name from a picker instead of by hand.
+      -- No file means no project config, which is flutter-tools' plain
+      -- default: :FlutterRun just runs lib/main.dart.
+      require("flutter.launch").setup()
 
       vim.api.nvim_create_autocmd("DirChanged", {
         group = vim.api.nvim_create_augroup("FlutterToolsEagerInit", { clear = true }),
