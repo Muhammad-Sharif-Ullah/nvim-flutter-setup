@@ -3,7 +3,7 @@ theme = "Catppuccin Mocha"
 
 # Transparency / glass
 background-opacity = 0.82
-background-blur-radius = 35
+background-blur = 35
 
 # Font
 font-family = JetBrainsMono Nerd Font
@@ -20,6 +20,7 @@ window-padding-y = 14
 # Window
 window-theme = dark
 macos-titlebar-style = transparent
+macos-non-native-fullscreen = true
 macos-option-as-alt = true
 
 # Smooth
