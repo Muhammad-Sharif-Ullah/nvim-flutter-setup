@@ -13,3 +13,12 @@ end, { desc = "Terminal (bottom)" })
 vim.keymap.set("n", "<leader>F?", function()
   vim.cmd.tabnew(vim.fn.stdpath("config") .. "/CHEATSHEET.md")
 end, { desc = "Flutter/Neovim cheatsheet" })
+
+-- Ctrl+J and Enter are the same byte, so <C-j> is unreliable in a
+-- terminal. <C-w> has no such collision: this makes it leave terminal
+-- mode and act as the ordinary window prefix, so <C-w>j, <C-w>k and
+-- <C-w>w all work from inside a shell exactly as they do in a buffer.
+vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>", { desc = "Window prefix" })
+
+-- Escape to normal mode inside a terminal, for scrolling and copying.
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Normal mode" })
